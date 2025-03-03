@@ -1,0 +1,36 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model artists {
+  artist_id Int    @id @default(autoincrement())
+  name      String @db.VarChar(255)
+}
+
+model songs {
+  song_id   Int    @id @default(autoincrement())
+  name      String @db.VarChar(255)
+  artist_id Int?
+
+  @@index([artist_id], map: "artist_id")
+}
+
+model voters {
+  voter_id Int    @id @default(autoincrement())
+  name     String @db.VarChar(255)
+}
+
+model votes {
+  vote_id  Int  @id @default(autoincrement())
+  voter_id Int?
+  song_id  Int?
+  points   Int?
+
+  @@index([song_id], map: "song_id")
+  @@index([voter_id], map: "voter_id")
+}
